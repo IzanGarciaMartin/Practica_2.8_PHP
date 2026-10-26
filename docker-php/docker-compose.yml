@@ -1,39 +1,36 @@
+
 services:
-
   web:
-    image: php:8.3-apache
-
+    build: .
     ports:
       - "8082:80"
-
+    environment:
+      DB_HOST: db
+      DB_NAME: tablon
+      DB_USER: dev
+      DB_PASSWORD: dev
     volumes:
-      - ./src:/var/www/html
+      - ./:/var/www/html
       - ./php/custom.ini:/usr/local/etc/php/conf.d/custom.ini:ro
-
     depends_on:
       - db
 
   db:
     image: mysql:8.4
-
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: tablon
       MYSQL_USER: dev
       MYSQL_PASSWORD: dev
-
     volumes:
       - db_data:/var/lib/mysql
 
   phpmyadmin:
     image: phpmyadmin
-
     environment:
       PMA_HOST: db
-
     ports:
       - "8083:80"
-
     depends_on:
       - db
 
